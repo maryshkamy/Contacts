@@ -9,6 +9,6 @@
 import Foundation
 
 struct Geo: Codable {
-    var lat: Double
-    var lng: Double
+    var lat: String
+    var lng: String
 }

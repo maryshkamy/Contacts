@@ -13,5 +13,5 @@ struct Address: Codable {
     var suite: String
     var city: String
     var zipcode: String
-//    var geo: Geo
+    var geo: Geo
 }
