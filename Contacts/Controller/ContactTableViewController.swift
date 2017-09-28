@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ContactTableViewController: UITableViewController, URLSessionDataDelegate {
 
@@ -38,6 +39,10 @@ class ContactTableViewController: UITableViewController, URLSessionDataDelegate 
             let dataTask = session.dataTask(with: request)
             dataTask.resume()
         }
+
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,7 +57,7 @@ class ContactTableViewController: UITableViewController, URLSessionDataDelegate 
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath)
 
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
