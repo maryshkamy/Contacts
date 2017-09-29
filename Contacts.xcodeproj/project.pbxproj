@@ -68,8 +68,8 @@
 		56550D381F74875A006E22F8 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				56550D501F7487F4006E22F8 /* Controller */,
 				56550D4F1F7487EE006E22F8 /* Model */,
+				56550D501F7487F4006E22F8 /* Controller */,
 				56550D511F7487FA006E22F8 /* Supporting Files */,
 				56550D4E1F7487E9006E22F8 /* View */,
 				56550D401F74875A006E22F8 /* Contacts.xcdatamodeld */,

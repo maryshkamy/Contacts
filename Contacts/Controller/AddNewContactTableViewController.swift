@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class AddNewContactTableViewController: UITableViewController {
+    private var viewContext = AppDelegate.viewContext
+
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -22,83 +25,129 @@ class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var catchPhraseTextField: UITextField!
     @IBOutlet weak var bsTextField: UITextField!
 
+    private var sessionConfiguration: URLSessionConfiguration {
+        let cfg = URLSessionConfiguration.default
+        cfg.allowsCellularAccess = true
+        cfg.networkServiceType = .default
+        cfg.requestCachePolicy = .returnCacheDataElseLoad
+        cfg.isDiscretionary = true
+        cfg.urlCache = URLCache(memoryCapacity: 2048,
+                                diskCapacity: 10240,
+                                diskPath: NSTemporaryDirectory())
+        return cfg
+    }
+
+    private var operationQueue: OperationQueue {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInteractive
+        queue.maxConcurrentOperationCount = 5
+        queue.underlyingQueue = DispatchQueue.global(qos: .userInteractive)
+        return queue
+    }
+
+    private var session: URLSession {
+        let session = URLSession(configuration: sessionConfiguration,
+                                 delegate: self,
+                                 delegateQueue: operationQueue)
+        return session
+    }
+
     @IBAction func DoneButton(_ sender: UIBarButtonItem) {
+        let user = UserEntity(context: viewContext)
+        user.id = Int32(arc4random() % (arc4random() % 100))
+        user.name = nameTextField.text
+        user.username = usernameTextField.text
+        user.email = emailTextField.text
+        user.address = AddressEntity(context: viewContext)
+        user.address?.street = streetTextField.text
+        user.address?.suite = suiteTextField.text
+        user.address?.city = cityTextField.text
+        user.address?.zipcode = zipcodeTextField.text
+        user.address?.geo = GeoEntity(context: viewContext)
+        user.address?.geo?.lat = String(0)
+        user.address?.geo?.lng = String(0)
+        user.phone = phoneTextField.text
+        user.website = websiteTextField.text
+        user.company = CompanyEntity(context: viewContext)
+        user.company?.name = companyNameTextField.text
+        user.company?.catchPhrase = catchPhraseTextField.text
+        user.company?.bs = bsTextField.text
+
+        do {
+            try viewContext.save()
+            DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
+                self.send(user)
+            }
+        }catch {
+            debugPrint(error)
+        }
     }
+
+    private func send(_ coreDataUser: UserEntity) {
+        let user = User(id: coreDataUser.id,
+                        name: coreDataUser.name!,
+                        username: coreDataUser.username!,
+                        email: coreDataUser.email!,
+                        address: Address(street: coreDataUser.address!.street!,
+                                         suite: coreDataUser.address!.suite!,
+                                         city: coreDataUser.address!.city!,
+                                         zipcode: coreDataUser.address!.zipcode!,
+                                         geo: Geo(lat: coreDataUser.address!.geo!.lat!,
+                                                  lng: coreDataUser.address!.geo!.lng!)),
+                        phone: coreDataUser.phone!,
+                        website: coreDataUser.website!,
+                        company: Company(name: coreDataUser.company!.name!,
+                                         catchPhrase: coreDataUser.company!.catchPhrase!,
+                                         bs: coreDataUser.company!.bs!))
+        do {
+            let encoder = JSONEncoder()
+            let jsonData = try encoder.encode(user)
+
+            if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
+                var request = URLRequest(url:url)
+                request.httpMethod = "POST"
+                request.timeoutInterval = 10
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpBody = jsonData
+
+                let dataTask = session.dataTask(with: request)
+                dataTask.resume()
+            }
+        }catch {
+            debugPrint(error)
+        }
+    }
+
     @IBAction func CancelButton(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+}
 
-    // MARK: - Table view data source
+extension AddNewContactTableViewController: URLSessionDataDelegate {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if let response = task.response as? HTTPURLResponse, response.statusCode == 201 {
+            print("deu derto")
+            DispatchQueue.main.async { [unowned self] in
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        if let erro = error {
+            debugPrint(erro)
+            DispatchQueue.main.async { [unowned self] in
+                let ac = UIAlertController(title: "Erro",
+                                           message: erro.localizedDescription,
+                                           preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK",
+                                           style: .default,
+                                           handler: nil))
+                self.present(ac, animated: true, completion: nil)
+            }
+        }
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

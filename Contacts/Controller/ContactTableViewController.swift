@@ -29,7 +29,7 @@ class ContactTableViewController: UITableViewController, URLSessionDataDelegate 
             fetchedResultsController = NSFetchedResultsController<UserEntity>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
             fetchedResultsController?.delegate = self
             try? fetchedResultsController?.performFetch()
-            tableView.reloadData()
+            self.tableView.reloadData()
         }
     }
     

@@ -51,7 +51,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="kC6-vs-6g4">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="6ud-iJ-yYt" kind="modal" id="rz4-32-wqk"/>
+                                <segue destination="6ud-iJ-yYt" kind="presentation" id="rz4-32-wqk"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
