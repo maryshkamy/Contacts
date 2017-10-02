@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class AddNewContactTableViewController: UITableViewController {
-    private var viewContext = AppDelegate.viewContext
+    @IBOutlet weak var doneBarButtonItem: UIBarButtonItem!
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -25,15 +25,23 @@ class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var catchPhraseTextField: UITextField!
     @IBOutlet weak var bsTextField: UITextField!
 
+    @IBAction func doneButton(_ sender: UIBarButtonItem) {
+        self.saveData()
+    }
+
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    private var viewContext = AppDelegate.viewContext
+
     private var sessionConfiguration: URLSessionConfiguration {
         let cfg = URLSessionConfiguration.default
         cfg.allowsCellularAccess = true
         cfg.networkServiceType = .default
         cfg.requestCachePolicy = .returnCacheDataElseLoad
         cfg.isDiscretionary = true
-        cfg.urlCache = URLCache(memoryCapacity: 2048,
-                                diskCapacity: 10240,
-                                diskPath: NSTemporaryDirectory())
+        cfg.urlCache = URLCache(memoryCapacity: 2048, diskCapacity: 10240, diskPath: NSTemporaryDirectory())
         return cfg
     }
 
@@ -46,14 +54,23 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     private var session: URLSession {
-        let session = URLSession(configuration: sessionConfiguration,
-                                 delegate: self,
-                                 delegateQueue: operationQueue)
+        let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: operationQueue)
         return session
     }
 
-    @IBAction func DoneButton(_ sender: UIBarButtonItem) {
+    private var textFields: [Int] = []
+
+    private func checkTextFields() {
+        if textFields.count == 12 {
+            doneBarButtonItem.isEnabled = true
+        } else {
+            doneBarButtonItem.isEnabled = false
+        }
+    }
+
+    private func saveData() {
         let user = UserEntity(context: viewContext)
+
         user.id = Int32(arc4random() % (arc4random() % 100))
         user.name = nameTextField.text
         user.username = usernameTextField.text
@@ -118,36 +135,166 @@ class AddNewContactTableViewController: UITableViewController {
         }
     }
 
-    @IBAction func CancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer (target: self, action: #selector(AddNewContactTableViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
 
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.hideKeyboardWhenTappedAround()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 }
 
+extension UITextField {
+    func isValidEmail() -> Bool {
+        return (self.text?.contains("@"))! && (self.text?.contains(".com"))!
+    }
+
+    func isValidURL() -> Bool {
+        return (self.text?.contains("http://"))! || (self.text?.contains("https://"))!
+    }
+
+    func setInvalidColor(valid: Bool) {
+        if valid == true {
+//            self.backgroundColor = UIColor.white
+            self.layer.borderWidth = 1
+            self.layer.borderColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
+        } else {
+//            self.backgroundColor = UIColor.red
+            self.layer.borderWidth = 1
+            self.layer.borderColor = UIColor.red.cgColor
+        }
+
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+    }
+}
+
+extension AddNewContactTableViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField.tag {
+        case 2:
+            if !textField.text!.isEmpty && textField.isValidEmail() {
+                self.textFields.append(textField.tag)
+                textField.setInvalidColor(valid: true)
+            } else {
+                if self.textFields.contains(textField.tag) {
+                    self.textFields.remove(at: textField.tag)
+                }
+
+                textField.setInvalidColor(valid: false)
+            }
+        case 4:
+            if !textField.text!.isEmpty && textField.isValidURL(){
+                self.textFields.append(textField.tag)
+                textField.setInvalidColor(valid: true)
+            } else {
+                if self.textFields.contains(textField.tag) {
+                    self.textFields.remove(at: textField.tag)
+                }
+
+                textField.setInvalidColor(valid: false)
+            }
+        default:
+            if textField.text!.isEmpty {
+                if self.textFields.contains(textField.tag) {
+                    self.textFields.remove(at: textField.tag)
+                }
+                
+                textField.setInvalidColor(valid: false)
+            } else {
+                self.textFields.append(textField.tag)
+                textField.setInvalidColor(valid: true)
+            }
+        }
+
+        checkTextFields()
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField.tag {
+        case 2:
+            if textField.isValidEmail() && textField == self.emailTextField {
+                textField.setInvalidColor(valid: true)
+                self.phoneTextField.becomeFirstResponder()
+            } else {
+                textField.setInvalidColor(valid: false)
+            }
+        case 4:
+            if textField.isValidURL() && textField == self.websiteTextField {
+                textField.setInvalidColor(valid: true)
+                self.streetTextField.becomeFirstResponder()
+            } else {
+                textField.setInvalidColor(valid: false)
+            }
+        default:
+            if !textField.text!.isEmpty && textField == self.nameTextField {
+                textField.setInvalidColor(valid: true)
+                self.usernameTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.usernameTextField {
+                textField.setInvalidColor(valid: true)
+                self.emailTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.phoneTextField {
+                textField.setInvalidColor(valid: true)
+                self.websiteTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.streetTextField {
+                textField.setInvalidColor(valid: true)
+                self.suiteTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.suiteTextField {
+                textField.setInvalidColor(valid: true)
+                self.cityTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.cityTextField {
+                textField.setInvalidColor(valid: true)
+                self.zipcodeTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.zipcodeTextField {
+                textField.setInvalidColor(valid: true)
+                self.companyNameTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.companyNameTextField {
+                textField.setInvalidColor(valid: true)
+                self.catchPhraseTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.catchPhraseTextField {
+                textField.setInvalidColor(valid: true)
+                self.bsTextField.becomeFirstResponder()
+            } else if !textField.text!.isEmpty && textField == self.bsTextField {
+                textField.setInvalidColor(valid: true)
+                self.saveData()
+            } else {
+                textField.setInvalidColor(valid: false)
+            }
+        }
+
+        checkTextFields()
+
+        return true
+    }
+}
+
 extension AddNewContactTableViewController: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let response = task.response as? HTTPURLResponse, response.statusCode == 201 {
-            print("deu derto")
+            print("201 Created")
             DispatchQueue.main.async { [unowned self] in
                 self.dismiss(animated: true, completion: nil)
             }
         }
 
-        if let erro = error {
-            debugPrint(erro)
-            DispatchQueue.main.async { [unowned self] in
-                let ac = UIAlertController(title: "Erro",
-                                           message: erro.localizedDescription,
-                                           preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "OK",
-                                           style: .default,
-                                           handler: nil))
-                self.present(ac, animated: true, completion: nil)
-            }
-        }
+//        if let erro = error {
+//            debugPrint(erro)
+//            DispatchQueue.main.async { [unowned self] in
+//                let ac = UIAlertController(title: "Erro", message: erro.localizedDescription, preferredStyle: .alert)
+//                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//                self.present(ac, animated: true, completion: nil)
+//            }
+//        }
     }
 }
