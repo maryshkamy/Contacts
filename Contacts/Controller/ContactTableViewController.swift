@@ -81,10 +81,10 @@ class ContactTableViewController: UITableViewController {
 
                 let dataTask = session.dataTask(with: request)
                 dataTask.resume()
+                
+                self.tableView.reloadData()
             }
         }
-
-        self.tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {

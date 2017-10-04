@@ -26,7 +26,7 @@ class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var bsTextField: UITextField!
 
     @IBAction func doneButton(_ sender: UIBarButtonItem) {
-        self.saveData()
+        self.saveInCoreData()
     }
 
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
@@ -68,7 +68,7 @@ class AddNewContactTableViewController: UITableViewController {
         }
     }
 
-    private func saveData() {
+    private func saveInCoreData() {
         let user = UserEntity(context: viewContext)
 
         user.id = Int32(arc4random() % (arc4random() % 100))
@@ -93,14 +93,14 @@ class AddNewContactTableViewController: UITableViewController {
         do {
             try viewContext.save()
             DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
-                self.send(user)
+                self.postToJSON(user)
             }
         }catch {
             debugPrint(error)
         }
     }
 
-    private func send(_ coreDataUser: UserEntity) {
+    private func postToJSON(_ coreDataUser: UserEntity) {
         let user = User(id: coreDataUser.id,
                         name: coreDataUser.name!,
                         username: coreDataUser.username!,
@@ -166,15 +166,12 @@ extension UITextField {
 
     func setInvalidColor(valid: Bool) {
         if valid == true {
-//            self.backgroundColor = UIColor.white
-            self.layer.borderWidth = 1
             self.layer.borderColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
         } else {
-//            self.backgroundColor = UIColor.red
-            self.layer.borderWidth = 1
             self.layer.borderColor = UIColor.red.cgColor
         }
 
+        self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
         self.layer.masksToBounds = true
     }
@@ -267,7 +264,7 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
                 self.bsTextField.becomeFirstResponder()
             } else if !textField.text!.isEmpty && textField == self.bsTextField {
                 textField.setInvalidColor(valid: true)
-                self.saveData()
+                self.saveInCoreData()
             } else {
                 textField.setInvalidColor(valid: false)
             }
