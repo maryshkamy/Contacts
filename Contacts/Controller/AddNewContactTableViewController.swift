@@ -27,6 +27,11 @@ class AddNewContactTableViewController: UITableViewController {
 
     @IBAction func doneButton(_ sender: UIBarButtonItem) {
         self.dismissKeyboard()
+
+        //Progress Indicator
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.view.addSubview(self.activityLoadView)
+
         self.saveInCoreData()
     }
 
@@ -97,10 +102,6 @@ class AddNewContactTableViewController: UITableViewController {
         do {
             try viewContext.save()
             DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
-                //Chamada Progress Indicator
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                self.view.addSubview(self.activityLoadView)
-
                 self.postToJSON(user)
             }
         }catch {
@@ -144,6 +145,8 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     @objc func dismissKeyboard() {
+        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        self.tableView.reloadData()
         checkTextFields()
         view.endEditing(true)
     }
@@ -283,6 +286,11 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
             } else if !textField.text!.isEmpty && textField == self.bsTextField {
                 textField.setInvalidColor(valid: true)
                 self.dismissKeyboard()
+
+                //Progress Indicator
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                self.view.addSubview(self.activityLoadView)
+
                 self.saveInCoreData()
             } else {
                 textField.setInvalidColor(valid: false)
@@ -300,7 +308,7 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
         if let response = task.response as? HTTPURLResponse, response.statusCode == 201 {
             print("201 Created")
             DispatchQueue.main.async { [unowned self] in
-                //Desaparecer Progress Indicator
+                //Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.activityLoadView.removeFromSuperview()
 
@@ -311,7 +319,7 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
         if let erro = error {
             debugPrint(erro)
             DispatchQueue.main.async { [unowned self] in
-                //Desaparecer Progress Indicator
+                //Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.activityLoadView.removeFromSuperview()
 
