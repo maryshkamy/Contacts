@@ -26,6 +26,7 @@ class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var bsTextField: UITextField!
 
     @IBAction func doneButton(_ sender: UIBarButtonItem) {
+        self.dismissKeyboard()
         self.saveInCoreData()
     }
 
@@ -33,32 +34,14 @@ class AddNewContactTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
 
+    private var textFields: [Int] = []
+
     private var viewContext = AppDelegate.viewContext
 
-    private var sessionConfiguration: URLSessionConfiguration {
-        let cfg = URLSessionConfiguration.default
-        cfg.allowsCellularAccess = true
-        cfg.networkServiceType = .default
-        cfg.requestCachePolicy = .returnCacheDataElseLoad
-        cfg.isDiscretionary = true
-        cfg.urlCache = URLCache(memoryCapacity: 2048, diskCapacity: 10240, diskPath: NSTemporaryDirectory())
-        return cfg
-    }
-
-    private var operationQueue: OperationQueue {
-        let queue = OperationQueue()
-        queue.qualityOfService = .userInteractive
-        queue.maxConcurrentOperationCount = 5
-        queue.underlyingQueue = DispatchQueue.global(qos: .userInteractive)
-        return queue
-    }
-
     private var session: URLSession {
-        let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: operationQueue)
+        let session = URLSession(configuration: SessionManager.shared.sessionConfiguration, delegate: self, delegateQueue: SessionManager.shared.operationQueue)
         return session
     }
-
-    private var textFields: [Int] = []
 
     private func checkTextFields() {
         if textFields.count == 12 {
@@ -69,6 +52,8 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     private func saveInCoreData() {
+        //Chamada Progress Indicator
+        
         let user = UserEntity(context: viewContext)
 
         user.id = Int32(arc4random() % (arc4random() % 100))
@@ -135,13 +120,14 @@ class AddNewContactTableViewController: UITableViewController {
         }
     }
 
+    @objc func dismissKeyboard() {
+        checkTextFields()
+        view.endEditing(true)
+    }
+
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer (target: self, action: #selector(AddNewContactTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-    }
-
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
     }
 
     override func viewDidLoad() {
@@ -182,7 +168,10 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
         switch textField.tag {
         case 2:
             if !textField.text!.isEmpty && textField.isValidEmail() {
-                self.textFields.append(textField.tag)
+                if !self.textFields.contains(textField.tag) {
+                    self.textFields.append(textField.tag)
+                }
+
                 textField.setInvalidColor(valid: true)
             } else {
                 if self.textFields.contains(textField.tag) {
@@ -193,7 +182,10 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
             }
         case 4:
             if !textField.text!.isEmpty && textField.isValidURL(){
-                self.textFields.append(textField.tag)
+                if !self.textFields.contains(textField.tag) {
+                    self.textFields.append(textField.tag)
+                }
+
                 textField.setInvalidColor(valid: true)
             } else {
                 if self.textFields.contains(textField.tag) {
@@ -210,7 +202,10 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
                 
                 textField.setInvalidColor(valid: false)
             } else {
-                self.textFields.append(textField.tag)
+                if !self.textFields.contains(textField.tag) {
+                    self.textFields.append(textField.tag)
+                }
+
                 textField.setInvalidColor(valid: true)
             }
         }
@@ -264,6 +259,7 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
                 self.bsTextField.becomeFirstResponder()
             } else if !textField.text!.isEmpty && textField == self.bsTextField {
                 textField.setInvalidColor(valid: true)
+                self.dismissKeyboard()
                 self.saveInCoreData()
             } else {
                 textField.setInvalidColor(valid: false)
@@ -278,6 +274,8 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
 
 extension AddNewContactTableViewController: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        //Desaparecer Progress Indicator
+
         if let response = task.response as? HTTPURLResponse, response.statusCode == 201 {
             print("201 Created")
             DispatchQueue.main.async { [unowned self] in
@@ -285,13 +283,13 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
             }
         }
 
-//        if let erro = error {
-//            debugPrint(erro)
-//            DispatchQueue.main.async { [unowned self] in
-//                let ac = UIAlertController(title: "Erro", message: erro.localizedDescription, preferredStyle: .alert)
-//                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//                self.present(ac, animated: true, completion: nil)
-//            }
-//        }
+        if let erro = error {
+            debugPrint(erro)
+            DispatchQueue.main.async { [unowned self] in
+                let ac = UIAlertController(title: "Erro", message: erro.localizedDescription, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in self.dismiss(animated: true, completion: nil) }))
+                self.present(ac, animated: true, completion: nil)
+            }
+        }
     }
 }

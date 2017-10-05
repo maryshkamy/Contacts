@@ -12,3 +12,10 @@ struct Geo: Codable {
     var lat: String
     var lng: String
 }
+
+extension GeoEntity {
+    func toGeo() -> Geo {
+        return Geo(lat: self.lat ?? "",
+                   lng: self.lng ?? "")
+    }
+}

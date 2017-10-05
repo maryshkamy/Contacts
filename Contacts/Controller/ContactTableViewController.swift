@@ -11,7 +11,14 @@ import CoreData
 
 class ContactTableViewController: UITableViewController {
     var jsonData = Data()
-    var users = [User]()
+
+    var users = [User]() {
+        willSet {
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+        }
+    }
 
     var container: NSPersistentContainer = AppDelegate.persistentContainer {
         didSet {
@@ -19,34 +26,14 @@ class ContactTableViewController: UITableViewController {
         }
     }
 
-    private var sessionConfiguration: URLSessionConfiguration {
-        let cfg = URLSessionConfiguration.default
-        cfg.allowsCellularAccess = true
-        cfg.networkServiceType = .default
-        cfg.requestCachePolicy = .returnCacheDataElseLoad
-        cfg.isDiscretionary = true
-        cfg.urlCache = URLCache(memoryCapacity: 2048, diskCapacity: 10240, diskPath: NSTemporaryDirectory())
-        return cfg
-    }
-
-    private var operationQueue: OperationQueue {
-        let queue = OperationQueue()
-        queue.qualityOfService = .userInteractive
-        queue.maxConcurrentOperationCount = 5
-        queue.underlyingQueue = DispatchQueue.global(qos: .userInteractive)
-        return queue
-    }
-
     private var session: URLSession {
-        let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: operationQueue)
+        let session = URLSession(configuration: SessionManager.shared.sessionConfiguration, delegate: self, delegateQueue: SessionManager.shared.operationQueue)
         return session
     }
 
     fileprivate var fetchedResultsController: NSFetchedResultsController<UserEntity>?
 
     private func updateUI() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-
         let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true, selector: nil)]
 
@@ -60,19 +47,24 @@ class ContactTableViewController: UITableViewController {
             self.users = entities.map({ $0.toUser() })
         }
 
-        self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let reachabilityStatus = Reachability.networkReachabilityForInternetConnection()?.currentReachabilityStatus
+
         if reachabilityStatus == .notReachable {
             print("Offline")
+
             self.updateUI()
         } else {
             print("Online")
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+
+            //Chamada Progress Indicator
 
             if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
                 var request = URLRequest(url:url)
@@ -81,8 +73,6 @@ class ContactTableViewController: UITableViewController {
 
                 let dataTask = session.dataTask(with: request)
                 dataTask.resume()
-                
-                self.tableView.reloadData()
             }
         }
     }
@@ -94,17 +84,20 @@ class ContactTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.fetchedObjects?.count ?? 0
+        return fetchedResultsController?.fetchedObjects?.count ?? users.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath)
 
-        if let user = fetchedResultsController?.object(at: indexPath) {
+        if let user  = fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = user.name
             cell.detailTextLabel?.text = user.username
+        } else {
+            cell.textLabel?.text = self.users[indexPath.row].name
+            cell.detailTextLabel?.text = self.users[indexPath.row].username
         }
-        
+
         return cell
     }
 }
@@ -115,6 +108,8 @@ extension ContactTableViewController: URLSessionDataDelegate {
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        //Desaparecer Progress Indicator
+        
         do {
             let decoder = JSONDecoder()
             users = try decoder.decode([User].self, from: jsonData)
@@ -128,11 +123,8 @@ extension ContactTableViewController: URLSessionDataDelegate {
                     self.container = AppDelegate.persistentContainer
                 }
                 catch {
-                    print("Erro ao salvar o contexto ")
+                    debugPrint(error)
                 }
-
-                self.updateUI()
-                print("Atualizando dados")
             }
         }catch {
             debugPrint(error)
@@ -172,43 +164,5 @@ extension ContactTableViewController: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-    }
-}
-
-extension UserEntity {
-    func toUser() -> User {
-        return User(id: self.id,
-                    name: self.name ?? "",
-                    username: self.username ?? "",
-                    email: self.email ?? "",
-                    address: self.address!.toAddress(),
-                    phone: self.phone ?? "",
-                    website: self.website ?? "",
-                    company: self.company!.toCompany())
-    }
-}
-
-extension AddressEntity {
-    func toAddress() -> Address {
-        return Address(street: self.street ?? "",
-                       suite: self.suite ?? "",
-                       city: self.city ?? "",
-                       zipcode: self.zipcode ?? "",
-                       geo: self.geo!.toGeo())
-    }
-}
-
-extension GeoEntity {
-    func toGeo() -> Geo {
-        return Geo(lat: self.lat ?? "",
-                   lng: self.lng ?? "")
-    }
-}
-
-extension CompanyEntity {
-    func toCompany() -> Company {
-        return Company(name: self.name ?? "",
-                       catchPhrase: self.catchPhrase ?? "",
-                       bs: self.bs ?? "")
     }
 }

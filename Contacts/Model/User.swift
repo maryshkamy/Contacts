@@ -18,3 +18,16 @@ struct User: Codable {
     var website: String
     var company: Company
 }
+
+extension UserEntity {
+    func toUser() -> User {
+        return User(id: self.id,
+                    name: self.name ?? "",
+                    username: self.username ?? "",
+                    email: self.email ?? "",
+                    address: self.address!.toAddress(),
+                    phone: self.phone ?? "",
+                    website: self.website ?? "",
+                    company: self.company!.toCompany())
+    }
+}

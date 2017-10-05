@@ -13,6 +13,7 @@
 		56550D441F74875A006E22F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56550D431F74875A006E22F8 /* Assets.xcassets */; };
 		56550D471F74875A006E22F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56550D451F74875A006E22F8 /* LaunchScreen.storyboard */; };
 		56550D531F748829006E22F8 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56550D521F748829006E22F8 /* ContactTableViewController.swift */; };
+		565F3A341F85E56300501758 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F3A331F85E56300501758 /* SessionManager.swift */; };
 		567FC5111F81944900DEA6C1 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567FC5101F81944900DEA6C1 /* Reachability.swift */; };
 		569119B71F7D9C5D002CBB3E /* UserDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569119B61F7D9C5D002CBB3E /* UserDAO.swift */; };
 		569119B91F7DBF9C002CBB3E /* AddNewContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */; };
@@ -31,6 +32,7 @@
 		56550D431F74875A006E22F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56550D461F74875A006E22F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56550D521F748829006E22F8 /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
+		565F3A331F85E56300501758 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		567FC5101F81944900DEA6C1 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		569119B61F7D9C5D002CBB3E /* UserDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDAO.swift; sourceTree = "<group>"; };
 		569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewContactTableViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				56C63BEA1F7D5EF500EF30C9 /* Address.swift */,
 				569119B61F7D9C5D002CBB3E /* UserDAO.swift */,
 				567FC5101F81944900DEA6C1 /* Reachability.swift */,
+				565F3A331F85E56300501758 /* SessionManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				569119B91F7DBF9C002CBB3E /* AddNewContactTableViewController.swift in Sources */,
 				567FC5111F81944900DEA6C1 /* Reachability.swift in Sources */,
 				56C63BEB1F7D5EF500EF30C9 /* Address.swift in Sources */,
+				565F3A341F85E56300501758 /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

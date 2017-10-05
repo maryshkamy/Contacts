@@ -15,3 +15,13 @@ struct Address: Codable {
     var zipcode: String
     var geo: Geo
 }
+
+extension AddressEntity {
+    func toAddress() -> Address {
+        return Address(street: self.street ?? "",
+                       suite: self.suite ?? "",
+                       city: self.city ?? "",
+                       zipcode: self.zipcode ?? "",
+                       geo: self.geo!.toGeo())
+    }
+}

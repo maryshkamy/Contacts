@@ -13,3 +13,11 @@ struct Company: Codable {
     var catchPhrase: String
     var bs: String
 }
+
+extension CompanyEntity {
+    func toCompany() -> Company {
+        return Company(name: self.name ?? "",
+                       catchPhrase: self.catchPhrase ?? "",
+                       bs: self.bs ?? "")
+    }
+}
