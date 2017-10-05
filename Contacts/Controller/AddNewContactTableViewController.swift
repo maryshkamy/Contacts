@@ -53,6 +53,7 @@ class AddNewContactTableViewController: UITableViewController {
 
     private func saveInCoreData() {
         //Chamada Progress Indicator
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         let user = UserEntity(context: viewContext)
 
@@ -274,11 +275,12 @@ extension AddNewContactTableViewController: UITextFieldDelegate {
 
 extension AddNewContactTableViewController: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        //Desaparecer Progress Indicator
-
         if let response = task.response as? HTTPURLResponse, response.statusCode == 201 {
             print("201 Created")
             DispatchQueue.main.async { [unowned self] in
+                //Desaparecer Progress Indicator
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -286,8 +288,12 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
         if let erro = error {
             debugPrint(erro)
             DispatchQueue.main.async { [unowned self] in
+                //Desaparecer Progress Indicator
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+
                 let ac = UIAlertController(title: "Erro", message: erro.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in self.dismiss(animated: true, completion: nil) }))
+
                 self.present(ac, animated: true, completion: nil)
             }
         }

@@ -65,6 +65,7 @@ class ContactTableViewController: UITableViewController {
             print("Online")
 
             //Chamada Progress Indicator
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
             if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
                 var request = URLRequest(url:url)
@@ -108,8 +109,6 @@ extension ContactTableViewController: URLSessionDataDelegate {
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        //Desaparecer Progress Indicator
-        
         do {
             let decoder = JSONDecoder()
             users = try decoder.decode([User].self, from: jsonData)
@@ -118,6 +117,9 @@ extension ContactTableViewController: URLSessionDataDelegate {
             dao.saveData(users: users, withPersistentContainer: container)
 
             DispatchQueue.main.async { [unowned self] in
+                //Desaparecer Progress Indicator
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+
                 do {
                     try AppDelegate.viewContext.save()
                     self.container = AppDelegate.persistentContainer
