@@ -26,6 +26,27 @@ class ContactTableViewController: UITableViewController {
         }
     }
 
+    var activityLoadView: UIView = {
+        let box = UIView(frame: CGRect(x: (UIScreen.main.bounds.width / 2) - 75, y: (UIScreen.main.bounds.height / 2) - 150, width: 150, height: 150))
+        box.layer.borderWidth = 1
+        box.layer.cornerRadius = 10
+        box.backgroundColor = .black
+        box.alpha = 0.75
+
+        let textActivity: UILabel = UILabel(frame: CGRect(x: 25, y: 75, width: 200, height: 50))
+        textActivity.text = "Carregando..."
+        textActivity.textColor = UIColor.white
+        box.addSubview(textActivity)
+
+        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 50, y: 40, width: 50, height: 50))
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
+        box.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+
+        return box
+    }()
+
     private var session: URLSession {
         let session = URLSession(configuration: SessionManager.shared.sessionConfiguration, delegate: self, delegateQueue: SessionManager.shared.operationQueue)
         return session
@@ -66,6 +87,7 @@ class ContactTableViewController: UITableViewController {
 
             //Chamada Progress Indicator
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            view.addSubview(activityLoadView)
 
             if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
                 var request = URLRequest(url:url)
@@ -119,6 +141,7 @@ extension ContactTableViewController: URLSessionDataDelegate {
             DispatchQueue.main.async { [unowned self] in
                 //Desaparecer Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.activityLoadView.removeFromSuperview()
 
                 do {
                     try AppDelegate.viewContext.save()

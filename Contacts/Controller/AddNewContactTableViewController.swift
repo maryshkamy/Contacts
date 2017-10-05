@@ -43,6 +43,27 @@ class AddNewContactTableViewController: UITableViewController {
         return session
     }
 
+    var activityLoadView: UIView = {
+        let box = UIView(frame: CGRect(x: (UIScreen.main.bounds.width / 2) - 75, y: (UIScreen.main.bounds.height / 2) - 150, width: 150, height: 150))
+        box.layer.borderWidth = 1
+        box.layer.cornerRadius = 10
+        box.backgroundColor = .black
+        box.alpha = 0.75
+
+        let textActivity: UILabel = UILabel(frame: CGRect(x: 25, y: 75, width: 200, height: 50))
+        textActivity.text = "Carregando..."
+        textActivity.textColor = UIColor.white
+        box.addSubview(textActivity)
+
+        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 50, y: 40, width: 50, height: 50))
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
+        box.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+
+        return box
+    }()
+
     private func checkTextFields() {
         if textFields.count == 12 {
             doneBarButtonItem.isEnabled = true
@@ -52,9 +73,6 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     private func saveInCoreData() {
-        //Chamada Progress Indicator
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
         let user = UserEntity(context: viewContext)
 
         user.id = Int32(arc4random() % (arc4random() % 100))
@@ -79,6 +97,10 @@ class AddNewContactTableViewController: UITableViewController {
         do {
             try viewContext.save()
             DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
+                //Chamada Progress Indicator
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                self.view.addSubview(self.activityLoadView)
+
                 self.postToJSON(user)
             }
         }catch {
@@ -280,6 +302,7 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
             DispatchQueue.main.async { [unowned self] in
                 //Desaparecer Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.activityLoadView.removeFromSuperview()
 
                 self.dismiss(animated: true, completion: nil)
             }
@@ -290,6 +313,7 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
             DispatchQueue.main.async { [unowned self] in
                 //Desaparecer Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.activityLoadView.removeFromSuperview()
 
                 let ac = UIAlertController(title: "Erro", message: erro.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in self.dismiss(animated: true, completion: nil) }))
