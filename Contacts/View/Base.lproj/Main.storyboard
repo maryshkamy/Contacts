@@ -4,7 +4,8 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -255,8 +256,28 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Endereço" id="ssF-hD-kOr">
                                 <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="qwt-1H-bqB" rowHeight="-1" style="IBUITableViewCellStyleDefault" id="Oob-xa-UFg">
+                                        <rect key="frame" x="0.0" y="536.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oob-xa-UFg" id="nE2-Qd-rxO">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Indicar usando um mapa..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qwt-1H-bqB">
+                                                    <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Lal-yx-KkT" kind="show" identifier="showMap" id="jdh-Z0-y7n"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="4v6-LO-5Pg">
-                                        <rect key="frame" x="0.0" y="536.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="580.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4v6-LO-5Pg" id="YVe-mI-x5v">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -292,7 +313,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="UOc-Qy-gsn">
-                                        <rect key="frame" x="0.0" y="621.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="665.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UOc-Qy-gsn" id="X0v-C2-gqy">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -328,7 +349,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="Qax-NI-iKo">
-                                        <rect key="frame" x="0.0" y="706.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="750.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qax-NI-iKo" id="dKn-UE-34d">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -364,7 +385,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="y1e-PN-LhP">
-                                        <rect key="frame" x="0.0" y="791.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="835.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y1e-PN-LhP" id="EB3-M3-fZ5">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -404,7 +425,7 @@
                             <tableViewSection headerTitle="Empresa" id="hVW-6x-PBs">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="xfs-Xf-Uyt">
-                                        <rect key="frame" x="0.0" y="932.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="976.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xfs-Xf-Uyt" id="r07-5I-MXV">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -440,7 +461,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="Iyi-LH-Rvf">
-                                        <rect key="frame" x="0.0" y="1017.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="1061.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Iyi-LH-Rvf" id="Czf-KX-HVN">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -476,7 +497,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="vYD-XF-9rH">
-                                        <rect key="frame" x="0.0" y="1102.5" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="1146.5" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vYD-XF-9rH" id="OZS-hT-G8j">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -554,6 +575,36 @@
             </objects>
             <point key="canvasLocation" x="2808.8000000000002" y="84.107946026986511"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="8Be-tO-x2u">
+            <objects>
+                <viewController id="Lal-yx-KkT" customClass="MapViewController" customModule="Contacts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ssW-n2-Bfw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="JeK-lJ-9ry">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JeK-lJ-9ry" firstAttribute="leading" secondItem="SqN-5p-C8h" secondAttribute="leading" id="CLY-Yb-H7A"/>
+                            <constraint firstItem="SqN-5p-C8h" firstAttribute="bottom" secondItem="JeK-lJ-9ry" secondAttribute="bottom" id="TRS-xv-1h4"/>
+                            <constraint firstItem="JeK-lJ-9ry" firstAttribute="top" secondItem="SqN-5p-C8h" secondAttribute="top" id="iRL-iy-Kjt"/>
+                            <constraint firstItem="SqN-5p-C8h" firstAttribute="trailing" secondItem="JeK-lJ-9ry" secondAttribute="trailing" id="tRk-Kf-Cpd"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="SqN-5p-C8h"/>
+                    </view>
+                    <connections>
+                        <outlet property="mapKitView" destination="JeK-lJ-9ry" id="at5-nc-pXK"/>
+                        <segue destination="1VF-lR-AP5" kind="show" identifier="GeoData" id="XlF-Wc-Mx3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mqi-i2-4cu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3886" y="84"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="TmQ-Fd-lWi">
             <objects>
@@ -563,9 +614,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qFA-Ui-Gqu">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="barTintColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="20"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <offsetWrapper key="textShadowOffset" horizontal="-200" vertical="0.0"/>
                         </textAttributes>
                     </navigationBar>
@@ -663,6 +716,7 @@
                         <color key="barTintColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="20"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -675,4 +729,9 @@
             <point key="canvasLocation" x="1968" y="85.457271364317847"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="jdh-Z0-y7n"/>
+        <segue reference="XlF-Wc-Mx3"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
 </document>

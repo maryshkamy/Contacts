@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var doneBarButtonItem: UIBarButtonItem!
@@ -36,8 +37,13 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismissKeyboard()
+        
         dismiss(animated: true, completion: nil)
     }
+
+    private var lat: Double = 0
+    private var lng: Double = 0
 
     private var textFields: [Int] = []
 
@@ -90,8 +96,8 @@ class AddNewContactTableViewController: UITableViewController {
         user.address?.city = cityTextField.text
         user.address?.zipcode = zipcodeTextField.text
         user.address?.geo = GeoEntity(context: viewContext)
-        user.address?.geo?.lat = String(0)
-        user.address?.geo?.lng = String(0)
+        user.address?.geo?.lat = String(lat)
+        user.address?.geo?.lng = String(lng)
         user.phone = phoneTextField.text
         user.website = websiteTextField.text
         user.company = CompanyEntity(context: viewContext)
@@ -151,19 +157,12 @@ class AddNewContactTableViewController: UITableViewController {
         view.endEditing(true)
     }
 
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer (target: self, action: #selector(AddNewContactTableViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.hideKeyboardWhenTappedAround()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showMap" {
+            if let destination = segue.destination as? MapViewController {
+                destination.delegate = self
+            }
+        }
     }
 }
 
@@ -319,6 +318,7 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
         if let erro = error {
             debugPrint(erro)
             DispatchQueue.main.async { [unowned self] in
+                
                 //Progress Indicator
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.activityLoadView.removeFromSuperview()
@@ -329,5 +329,32 @@ extension AddNewContactTableViewController: URLSessionDataDelegate {
                 self.present(ac, animated: true, completion: nil)
             }
         }
+    }
+}
+
+extension AddNewContactTableViewController: AddressProtocol {
+    func didReceive(placemark: CLPlacemark?) {
+        guard let placemark = placemark else { return }
+
+        print(placemark)
+
+        self.streetTextField.text = placemark.name!
+        if !self.textFields.contains(self.streetTextField.tag) {
+            self.textFields.append(self.streetTextField.tag)
+        }
+
+        self.cityTextField.text = placemark.locality
+        if !self.textFields.contains(self.cityTextField.tag) {
+            self.textFields.append(self.cityTextField.tag)
+        }
+
+        self.zipcodeTextField.text = placemark.postalCode
+        if !self.textFields.contains(self.zipcodeTextField.tag) {
+            self.textFields.append(self.zipcodeTextField.tag)
+        }
+
+
+        self.lat = placemark.location!.coordinate.latitude
+        self.lng = placemark.location!.coordinate.longitude
     }
 }

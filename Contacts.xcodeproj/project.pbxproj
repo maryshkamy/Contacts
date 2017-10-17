@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5632FE2C1F9576B400CA8BF6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5632FE2B1F9576B400CA8BF6 /* MapKit.framework */; };
+		5632FE2E1F957A5F00CA8BF6 /* AddressProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632FE2D1F957A5F00CA8BF6 /* AddressProtocol.swift */; };
 		56550D3A1F74875A006E22F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56550D391F74875A006E22F8 /* AppDelegate.swift */; };
 		56550D3F1F74875A006E22F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56550D3D1F74875A006E22F8 /* Main.storyboard */; };
 		56550D421F74875A006E22F8 /* Contacts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56550D401F74875A006E22F8 /* Contacts.xcdatamodeld */; };
@@ -20,11 +22,14 @@
 		56C63BE71F7D5EC800EF30C9 /* Geo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C63BE61F7D5EC800EF30C9 /* Geo.swift */; };
 		56C63BE91F7D5EDF00EF30C9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C63BE81F7D5EDF00EF30C9 /* Company.swift */; };
 		56C63BEB1F7D5EF500EF30C9 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C63BEA1F7D5EF500EF30C9 /* Address.swift */; };
+		56DC52251F86FE950023B7C5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC52241F86FE950023B7C5 /* MapViewController.swift */; };
 		56F337D81F749E550027E261 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F337D71F749E550027E261 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		562869A81F748AC80031F51B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5632FE2B1F9576B400CA8BF6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		5632FE2D1F957A5F00CA8BF6 /* AddressProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressProtocol.swift; sourceTree = "<group>"; };
 		56550D361F74875A006E22F8 /* Contacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Contacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56550D391F74875A006E22F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56550D3E1F74875A006E22F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -39,6 +44,7 @@
 		56C63BE61F7D5EC800EF30C9 /* Geo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geo.swift; sourceTree = "<group>"; };
 		56C63BE81F7D5EDF00EF30C9 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		56C63BEA1F7D5EF500EF30C9 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		56DC52241F86FE950023B7C5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		56F337D71F749E550027E261 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,17 +53,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5632FE2C1F9576B400CA8BF6 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5632FE2A1F9576B400CA8BF6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5632FE2B1F9576B400CA8BF6 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		56550D2D1F74875A006E22F8 = {
 			isa = PBXGroup;
 			children = (
 				56550D381F74875A006E22F8 /* Contacts */,
 				56550D371F74875A006E22F8 /* Products */,
+				5632FE2A1F9576B400CA8BF6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,6 +109,7 @@
 		56550D4F1F7487EE006E22F8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5632FE2D1F957A5F00CA8BF6 /* AddressProtocol.swift */,
 				56F337D71F749E550027E261 /* User.swift */,
 				56C63BE61F7D5EC800EF30C9 /* Geo.swift */,
 				56C63BE81F7D5EDF00EF30C9 /* Company.swift */,
@@ -109,6 +126,7 @@
 			children = (
 				56550D521F748829006E22F8 /* ContactTableViewController.swift */,
 				569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */,
+				56DC52241F86FE950023B7C5 /* MapViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -156,6 +174,11 @@
 					56550D351F74875A006E22F8 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -201,7 +224,9 @@
 				569119B71F7D9C5D002CBB3E /* UserDAO.swift in Sources */,
 				56550D531F748829006E22F8 /* ContactTableViewController.swift in Sources */,
 				56C63BE71F7D5EC800EF30C9 /* Geo.swift in Sources */,
+				5632FE2E1F957A5F00CA8BF6 /* AddressProtocol.swift in Sources */,
 				56C63BE91F7D5EDF00EF30C9 /* Company.swift in Sources */,
+				56DC52251F86FE950023B7C5 /* MapViewController.swift in Sources */,
 				569119B91F7DBF9C002CBB3E /* AddNewContactTableViewController.swift in Sources */,
 				567FC5111F81944900DEA6C1 /* Reachability.swift in Sources */,
 				56C63BEB1F7D5EF500EF30C9 /* Address.swift in Sources */,
