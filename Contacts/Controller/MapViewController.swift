@@ -10,9 +10,6 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController {
-
-    var delegate: AddressProtocol?
-
     @IBOutlet weak var mapKitView: MKMapView! {
         didSet {
             mapKitView.delegate = self
@@ -23,6 +20,8 @@ class MapViewController: UIViewController {
     }
 
     private var locationManager = CLLocationManager()
+
+    var delegate: AddressProtocol?
 
     @objc private func addPin(_ sender: UILongPressGestureRecognizer) {
         let annotations = mapKitView.annotations.filter { (annotation) -> Bool in

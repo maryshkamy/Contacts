@@ -43,6 +43,13 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Contacts needs your location</string>
+	<string>Endereço com base na sua localização atual.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Nova foto do perfil.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

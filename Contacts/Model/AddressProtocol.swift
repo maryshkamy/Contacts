@@ -12,4 +12,3 @@ import CoreLocation
 protocol AddressProtocol {
     func didReceive(placemark: CLPlacemark?)
 }
-

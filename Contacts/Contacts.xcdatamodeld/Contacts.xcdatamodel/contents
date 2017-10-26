@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AddressEntity" representedClassName="AddressEntity" syncable="YES" codeGenerationType="class">
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,6 +7,11 @@
         <attribute name="zipcode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="geo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GeoEntity" inverseName="addresses" inverseEntity="GeoEntity" syncable="YES"/>
         <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="address" inverseEntity="UserEntity" syncable="YES"/>
+    </entity>
+    <entity name="AlbumsEntity" representedClassName="AlbumsEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="CompanyEntity" representedClassName="CompanyEntity" syncable="YES" codeGenerationType="class">
         <attribute name="bs" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,11 +24,20 @@
         <attribute name="lng" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AddressEntity" inverseName="geo" inverseEntity="AddressEntity" syncable="YES"/>
     </entity>
+    <entity name="PhotosEntity" representedClassName="PhotosEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="albumId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="website" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AddressEntity" inverseName="users" inverseEntity="AddressEntity" syncable="YES"/>
@@ -33,6 +47,8 @@
         <element name="AddressEntity" positionX="-263" positionY="27" width="128" height="133"/>
         <element name="CompanyEntity" positionX="124" positionY="48" width="128" height="103"/>
         <element name="GeoEntity" positionX="-81" positionY="195" width="128" height="88"/>
-        <element name="UserEntity" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="UserEntity" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="AlbumsEntity" positionX="-72" positionY="117" width="128" height="90"/>
+        <element name="PhotosEntity" positionX="-63" positionY="126" width="128" height="135"/>
     </elements>
 </model>

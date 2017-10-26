@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		560F76151FA23E6E003E0E23 /* UIImage+GetImagem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560F76141FA23E6E003E0E23 /* UIImage+GetImagem.swift */; };
+		562584D11FA0DA5F008B3F18 /* Albums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562584D01FA0DA5F008B3F18 /* Albums.swift */; };
+		562584D31FA1002F008B3F18 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562584D21FA1002F008B3F18 /* Photos.swift */; };
+		562584D91FA10FE5008B3F18 /* AlbumPhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562584D81FA10FE5008B3F18 /* AlbumPhotosCollectionViewCell.swift */; };
+		562584DB1FA10FFF008B3F18 /* UserAlbumsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562584DA1FA10FFF008B3F18 /* UserAlbumsTableViewCell.swift */; };
 		5632FE2C1F9576B400CA8BF6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5632FE2B1F9576B400CA8BF6 /* MapKit.framework */; };
 		5632FE2E1F957A5F00CA8BF6 /* AddressProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632FE2D1F957A5F00CA8BF6 /* AddressProtocol.swift */; };
 		56550D3A1F74875A006E22F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56550D391F74875A006E22F8 /* AppDelegate.swift */; };
@@ -17,6 +22,7 @@
 		56550D531F748829006E22F8 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56550D521F748829006E22F8 /* ContactTableViewController.swift */; };
 		565F3A341F85E56300501758 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F3A331F85E56300501758 /* SessionManager.swift */; };
 		567FC5111F81944900DEA6C1 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567FC5101F81944900DEA6C1 /* Reachability.swift */; };
+		568997161F996BAF004F5A2B /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568997151F996BAF004F5A2B /* UserViewController.swift */; };
 		569119B71F7D9C5D002CBB3E /* UserDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569119B61F7D9C5D002CBB3E /* UserDAO.swift */; };
 		569119B91F7DBF9C002CBB3E /* AddNewContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */; };
 		56C63BE71F7D5EC800EF30C9 /* Geo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C63BE61F7D5EC800EF30C9 /* Geo.swift */; };
@@ -27,6 +33,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		560F76141FA23E6E003E0E23 /* UIImage+GetImagem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GetImagem.swift"; sourceTree = "<group>"; };
+		562584D01FA0DA5F008B3F18 /* Albums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Albums.swift; sourceTree = "<group>"; };
+		562584D21FA1002F008B3F18 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		562584D81FA10FE5008B3F18 /* AlbumPhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumPhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		562584DA1FA10FFF008B3F18 /* UserAlbumsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAlbumsTableViewCell.swift; sourceTree = "<group>"; };
 		562869A81F748AC80031F51B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5632FE2B1F9576B400CA8BF6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5632FE2D1F957A5F00CA8BF6 /* AddressProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressProtocol.swift; sourceTree = "<group>"; };
@@ -39,6 +50,7 @@
 		56550D521F748829006E22F8 /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
 		565F3A331F85E56300501758 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		567FC5101F81944900DEA6C1 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		568997151F996BAF004F5A2B /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		569119B61F7D9C5D002CBB3E /* UserDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDAO.swift; sourceTree = "<group>"; };
 		569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewContactTableViewController.swift; sourceTree = "<group>"; };
 		56C63BE61F7D5EC800EF30C9 /* Geo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geo.swift; sourceTree = "<group>"; };
@@ -102,6 +114,8 @@
 			children = (
 				56550D451F74875A006E22F8 /* LaunchScreen.storyboard */,
 				56550D3D1F74875A006E22F8 /* Main.storyboard */,
+				562584D81FA10FE5008B3F18 /* AlbumPhotosCollectionViewCell.swift */,
+				562584DA1FA10FFF008B3F18 /* UserAlbumsTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -117,6 +131,9 @@
 				569119B61F7D9C5D002CBB3E /* UserDAO.swift */,
 				567FC5101F81944900DEA6C1 /* Reachability.swift */,
 				565F3A331F85E56300501758 /* SessionManager.swift */,
+				562584D01FA0DA5F008B3F18 /* Albums.swift */,
+				562584D21FA1002F008B3F18 /* Photos.swift */,
+				560F76141FA23E6E003E0E23 /* UIImage+GetImagem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -127,6 +144,7 @@
 				56550D521F748829006E22F8 /* ContactTableViewController.swift */,
 				569119B81F7DBF9C002CBB3E /* AddNewContactTableViewController.swift */,
 				56DC52241F86FE950023B7C5 /* MapViewController.swift */,
+				568997151F996BAF004F5A2B /* UserViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -218,18 +236,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				562584D11FA0DA5F008B3F18 /* Albums.swift in Sources */,
 				56F337D81F749E550027E261 /* User.swift in Sources */,
+				562584DB1FA10FFF008B3F18 /* UserAlbumsTableViewCell.swift in Sources */,
+				560F76151FA23E6E003E0E23 /* UIImage+GetImagem.swift in Sources */,
 				56550D3A1F74875A006E22F8 /* AppDelegate.swift in Sources */,
 				56550D421F74875A006E22F8 /* Contacts.xcdatamodeld in Sources */,
 				569119B71F7D9C5D002CBB3E /* UserDAO.swift in Sources */,
 				56550D531F748829006E22F8 /* ContactTableViewController.swift in Sources */,
 				56C63BE71F7D5EC800EF30C9 /* Geo.swift in Sources */,
 				5632FE2E1F957A5F00CA8BF6 /* AddressProtocol.swift in Sources */,
+				568997161F996BAF004F5A2B /* UserViewController.swift in Sources */,
 				56C63BE91F7D5EDF00EF30C9 /* Company.swift in Sources */,
 				56DC52251F86FE950023B7C5 /* MapViewController.swift in Sources */,
 				569119B91F7DBF9C002CBB3E /* AddNewContactTableViewController.swift in Sources */,
 				567FC5111F81944900DEA6C1 /* Reachability.swift in Sources */,
+				562584D91FA10FE5008B3F18 /* AlbumPhotosCollectionViewCell.swift in Sources */,
 				56C63BEB1F7D5EF500EF30C9 /* Address.swift in Sources */,
+				562584D31FA1002F008B3F18 /* Photos.swift in Sources */,
 				565F3A341F85E56300501758 /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

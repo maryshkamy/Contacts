@@ -104,8 +104,6 @@ class ContactTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController?.fetchedObjects?.count ?? users.count
     }
@@ -122,6 +120,18 @@ class ContactTableViewController: UITableViewController {
         }
 
         return cell
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "userSegue" {
+            if let destination = segue.destination as? UserViewController {
+                if let cell = sender as? UITableViewCell {
+                    if let indexPath = tableView.indexPath(for: cell) {
+                        destination.user = self.users[indexPath.row]
+                    }
+                }
+            }
+        }
     }
 }
 
