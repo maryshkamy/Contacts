@@ -124,7 +124,7 @@ class ContactTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "userSegue" {
-            if let destination = segue.destination as? UserViewController {
+            if let destination = segue.destination as? UserDetailViewController {
                 if let cell = sender as? UITableViewCell {
                     if let indexPath = tableView.indexPath(for: cell) {
                         destination.user = self.users[indexPath.row]

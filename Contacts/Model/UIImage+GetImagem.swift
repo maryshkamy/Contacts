@@ -11,16 +11,18 @@ import UIKit
 
 extension UIImageView {
     private var session: URLSession {
-        let session = URLSession(configuration: SessionManager.shared.sessionConfiguration, delegate: nil, delegateQueue: SessionManager.shared.operationQueue)
+        let session = URLSession(configuration: SessionManager.shared.sessionConfiguration,
+                                 delegate: nil,
+                                 delegateQueue: SessionManager.shared.operationQueue)
         return session
     }
     
     public func imageFromServerURL(urlString: String) {
-        let url = URL(string:urlString)!
-        var request = URLRequest(url:url)
+        guard let url = URL(string:urlString) else { return }
+        var request = URLRequest(url: url)
         request.timeoutInterval = 100
 
-        session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
+        session.dataTask(with: request, completionHandler: { [unowned self] (data, response, error) -> Void in
             if error != nil {
                 print(error!.localizedDescription)
                 return
