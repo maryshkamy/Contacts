@@ -201,3 +201,4 @@ extension ContactTableViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 }
+

@@ -39,8 +39,6 @@ class UserAlbumsTableViewCell: UITableViewCell {
                 }
             }).resume()
         }
-
-
     }
 
 }
