@@ -8,51 +8,64 @@
 
 import UIKit
 
-class UserAlbumsTableViewCell: UITableViewCell {
+class UserAlbumsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+
+    // MARK: Private Property(ies).
+
+    private var album: Album!
+    private var dataSource: [Photo] = [] {
+        willSet {
+            reloadData()
+        }
+    }
+
+    // MARK: IBOutlet(s).
+
     @IBOutlet weak var photosCollectionView: UICollectionView!
-    @IBOutlet weak var albumTitle: UILabel! {
-        didSet{
-            setup()
+    @IBOutlet weak var albumTitle: UILabel!
+
+    // MARK: Public Function(s).
+
+    func render(album: Album) {
+        self.album = album
+        self.albumTitle.text = self.album.title!
+
+        self.requestFromCoreData()
+    }
+
+    // MARK: Private Function(s).
+
+    private func reloadData() {
+        DispatchQueue.main.async {
+            self.photosCollectionView.reloadData()
         }
     }
 
-    private var photos: [Photos]?
-
-    var album: Albums? {
-        didSet {
-            setup()
+    private func requestFromCoreData() {
+        if let dataSource = self.album.photo {
+            self.dataSource = dataSource.map { $0 as! Photo }
         }
+
+        requestFromServer()
     }
 
-    private func setup() {
-        guard let myAlbum = album else { return }
-
-        albumTitle?.text = myAlbum.title
-
-        if let url = URL(string: "https://jsonplaceholder.typicode.com/albums/\(myAlbum.id)/photos") {
-            URLSession.shared.dataTask(with: url, completionHandler: { [weak self] (data, response, error) in
-                if let albumData = data {
-                    self?.photos = try? JSONDecoder().decode([Photos].self, from: albumData)
-                    DispatchQueue.main.async {
-                        self?.photosCollectionView.reloadData()
-                    }
-                }
-            }).resume()
-        }
+    private func requestFromServer() {
+        DataManager.Remote.getPhotos(by: self.album!, onSuccess: { (dataSource) in
+            self.dataSource = dataSource
+        }, onError: { (error) in
+            print(error.localizedDescription)
+        })
     }
 
-}
+    // MARK: UICollectionView DataSource.
 
-extension UserAlbumsTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos?.count ?? 0
+        return dataSource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! AlbumPhotosCollectionViewCell
-
-        cell.imageURL = URL(string: "http://lorempixel.com/30/30")
-        cell.activityIndicatorView.hidesWhenStopped = true
+        cell.render(photo: dataSource[indexPath.row])
 
         return cell
     }

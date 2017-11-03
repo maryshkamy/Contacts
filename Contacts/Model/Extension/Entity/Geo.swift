@@ -8,14 +8,9 @@
 
 import Foundation
 
-struct Geo: Codable {
-    var lat: String
-    var lng: String
-}
-
-extension GeoEntity {
-    func toGeo() -> Geo {
-        return Geo(lat: self.lat ?? "",
-                   lng: self.lng ?? "")
+extension Geo {
+    func set(json: [String: Any]) {
+        self.lat = json["lat"] as? String
+        self.lng = json["lng"] as? String
     }
 }

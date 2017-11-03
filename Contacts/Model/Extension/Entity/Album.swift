@@ -1,5 +1,5 @@
 //
-//  UserAlbums.swift
+//  Album.swift
 //  Contacts
 //
 //  Created by Mariana Rios Silveira Carvalho on 25/10/17.
@@ -8,10 +8,9 @@
 
 import Foundation
 
-struct Photos: Codable {
-    var albumId: Int32
-    var id: Int32
-    var title: String
-    var url: String
-    var thumbnailUrl: String
+extension Album {
+    func set(json: [String: Any]) {
+        self.id = json["id"] as! Int32
+        self.title = json["title"] as? String
+    }
 }

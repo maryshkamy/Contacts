@@ -26,6 +26,27 @@ class AddNewContactTableViewController: UITableViewController {
     @IBOutlet weak var catchPhraseTextField: UITextField!
     @IBOutlet weak var bsTextField: UITextField!
 
+    var activityLoadView: UIView {
+        let box = UIView(frame: CGRect(x: (UIScreen.main.bounds.width / 2) - 75, y: (UIScreen.main.bounds.height / 2) - 150, width: 150, height: 150))
+        box.layer.borderWidth = 1
+        box.layer.cornerRadius = 10
+        box.backgroundColor = .black
+        box.alpha = 0.75
+
+        let textActivity: UILabel = UILabel(frame: CGRect(x: 25, y: 75, width: 200, height: 50))
+        textActivity.text = "Carregando..."
+        textActivity.textColor = UIColor.white
+        box.addSubview(textActivity)
+
+        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 50, y: 40, width: 50, height: 50))
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
+        box.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+
+        return box
+    }
+
     @IBAction func doneButton(_ sender: UIBarButtonItem) {
         self.dismissKeyboard()
 
@@ -54,27 +75,6 @@ class AddNewContactTableViewController: UITableViewController {
         return session
     }
 
-    var activityLoadView: UIView = {
-        let box = UIView(frame: CGRect(x: (UIScreen.main.bounds.width / 2) - 75, y: (UIScreen.main.bounds.height / 2) - 150, width: 150, height: 150))
-        box.layer.borderWidth = 1
-        box.layer.cornerRadius = 10
-        box.backgroundColor = .black
-        box.alpha = 0.75
-
-        let textActivity: UILabel = UILabel(frame: CGRect(x: 25, y: 75, width: 200, height: 50))
-        textActivity.text = "Carregando..."
-        textActivity.textColor = UIColor.white
-        box.addSubview(textActivity)
-
-        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 50, y: 40, width: 50, height: 50))
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
-        box.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-
-        return box
-    }()
-
     private func checkTextFields() {
         if textFields.count == 12 {
             doneBarButtonItem.isEnabled = true
@@ -84,23 +84,23 @@ class AddNewContactTableViewController: UITableViewController {
     }
 
     private func saveInCoreData() {
-        let user = UserEntity(context: viewContext)
+        let user = User(context: viewContext)
 
         user.id = Int32(arc4random() % (arc4random() % 100))
         user.name = nameTextField.text
         user.username = usernameTextField.text
         user.email = emailTextField.text
-        user.address = AddressEntity(context: viewContext)
+        user.address = Address(context: viewContext)
         user.address?.street = streetTextField.text
         user.address?.suite = suiteTextField.text
         user.address?.city = cityTextField.text
         user.address?.zipcode = zipcodeTextField.text
-        user.address?.geo = GeoEntity(context: viewContext)
+        user.address?.geo = Geo(context: viewContext)
         user.address?.geo?.lat = String(lat)
         user.address?.geo?.lng = String(lng)
         user.phone = phoneTextField.text
         user.website = websiteTextField.text
-        user.company = CompanyEntity(context: viewContext)
+        user.company = Company(context: viewContext)
         user.company?.name = companyNameTextField.text
         user.company?.catchPhrase = catchPhraseTextField.text
         user.company?.bs = bsTextField.text
@@ -115,38 +115,16 @@ class AddNewContactTableViewController: UITableViewController {
         }
     }
 
-    private func postToJSON(_ coreDataUser: UserEntity) {
-        let user = User(id: coreDataUser.id,
-                        name: coreDataUser.name!,
-                        username: coreDataUser.username!,
-                        email: coreDataUser.email!,
-                        address: Address(street: coreDataUser.address!.street!,
-                                         suite: coreDataUser.address!.suite!,
-                                         city: coreDataUser.address!.city!,
-                                         zipcode: coreDataUser.address!.zipcode!,
-                                         geo: Geo(lat: coreDataUser.address!.geo!.lat!,
-                                                  lng: coreDataUser.address!.geo!.lng!)),
-                        phone: coreDataUser.phone!,
-                        website: coreDataUser.website!,
-                        company: Company(name: coreDataUser.company!.name!,
-                                         catchPhrase: coreDataUser.company!.catchPhrase!,
-                                         bs: coreDataUser.company!.bs!))
-        do {
-            let encoder = JSONEncoder()
-            let jsonData = try encoder.encode(user)
+    private func postToJSON(_ user: User) {
+        if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
+            var request = URLRequest(url:url)
+            request.httpMethod = "POST"
+            request.timeoutInterval = 10
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = Data()
 
-            if let url = URL(string: "https://jsonplaceholder.typicode.com/users") {
-                var request = URLRequest(url:url)
-                request.httpMethod = "POST"
-                request.timeoutInterval = 10
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.httpBody = jsonData
-
-                let dataTask = session.dataTask(with: request)
-                dataTask.resume()
-            }
-        }catch {
-            debugPrint(error)
+            let dataTask = session.dataTask(with: request)
+            dataTask.resume()
         }
     }
 

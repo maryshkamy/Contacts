@@ -9,24 +9,52 @@
 import UIKit
 
 class AlbumPhotosCollectionViewCell: UICollectionViewCell {
+
+    // MARK: Private Property(ies).
+
+    private let status = Reachability.networkReachabilityForInternetConnection()?.currentReachabilityStatus
+    private var photo: Photo!
+
+    // MARK: IBOutlet(s).
+
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
-    var imageURL: URL? {
-        didSet {
-            if let url = imageURL {
-                activityIndicatorView.startAnimating()
-                DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                    if let data = try?Data(contentsOf: url) {
-                        DispatchQueue.main.async {
-                            self?.photoImageView.image = UIImage(data: data)
-                            self?.activityIndicatorView.stopAnimating()
+    // MARK: Public Function(s).
+
+    func render(photo: Photo) {
+        self.photo = photo
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.startAnimating()
+
+        requestFromCoreData()
+    }
+
+    private func requestFromCoreData() {
+        if let data = photo.photo {
+            self.photoImageView.image = UIImage(data: data)!
+        }
+
+        requestFromServer()
+    }
+
+    private func requestFromServer() {
+        if status != .notReachable {
+            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+                if let data = try? Data(contentsOf: URL(string: "http://lorempixel.com/30/30")!) {
+                    DispatchQueue.main.async {
+                        self?.photoImageView.image = UIImage(data: data)
+                        self?.activityIndicatorView.stopAnimating()
+                        self?.photo.photo = UIImagePNGRepresentation(UIImage(data: data)!)
+
+                        do {
+                            try AppDelegate.viewContext.save()
+                        } catch let error {
+                            print(error.localizedDescription)
                         }
                     }
                 }
             }
         }
     }
-
-    
 }
